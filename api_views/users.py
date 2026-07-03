@@ -22,8 +22,9 @@ def get_all_users():
 
 
 def debug():
-    return_value = jsonify({'users': User.get_all_users_debug()})
-    return return_value
+    # Patched (Challenge-1): this endpoint leaked every user's cleartext password and admin flag to
+    # unauthenticated callers. A debug dump has no place in a running app - forbid it.
+    return Response(error_message_helper("Not available"), 403, mimetype="application/json")
 
 def me():
     resp = token_validator(request.headers.get('Authorization'))

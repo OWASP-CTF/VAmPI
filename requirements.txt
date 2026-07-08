@@ -6,3 +6,5 @@ sqlalchemy==2.0.2
 swagger-ui-bundle
 PyJWT==2.6.0
 markupsafe==2.1.2
+
+Flask-Limiter==3.3.1

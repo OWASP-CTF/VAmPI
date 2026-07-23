@@ -10,9 +10,14 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(vuln_app.app.root_path, 'd
 vuln_app.app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 vuln_app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-vuln_app.app.config['SECRET_KEY'] = 'random'
+SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(32).hex()
+vuln_app.app.config['SECRET_KEY'] = SECRET_KEY
 # start the db
 db = SQLAlchemy(vuln_app.app)
+
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+limiter = Limiter(key_func=get_remote_address, app=vuln_app.app, default_limits=[], storage_uri="memory://")
 
 def custom_problem_handler(error):
     # Custom error handler for clarity in structure
